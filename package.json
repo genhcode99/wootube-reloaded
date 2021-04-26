@@ -1,0 +1,21 @@
+{
+  "name": "wootube",
+  "version": "1.0.0",
+  "description": "The best way to watch a videos.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genhcode99/wootube-reloaded.git"
+  },
+  "scripts": {
+    "win": "node index.js"
+  },
+  "author": "genHcode99",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/genhcode99/wootube-reloaded/issues"
+  },
+  "homepage": "https://github.com/genhcode99/wootube-reloaded#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
