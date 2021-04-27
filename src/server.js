@@ -10,9 +10,13 @@ const app = express();
 
 //app 설정
 
-const handleHome = () => console.log("Somebody is tring to go home.");
+const handleHome = (req, res) => {
+  return res.send("I still love you.");
+};
+const handleLogin = (req, res) => {return res.send("Login here.")};
 
 app.get("/", handleHome);
+app.get("/login", handleLogin);
 
 
 
