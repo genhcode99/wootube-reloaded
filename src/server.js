@@ -7,31 +7,20 @@ const PORT = 4000;
 const app = express();
 
 
+//-----< MIDDLE WARE >-----
+import logger from "morgan";
 
-//----------< app 설정 >----------
+app.use(logger("dev"));
 
-//MIDDLE WARE
-const methodLogger = (req, res, next) => {
-  console.log("METHOD", req.method);
-  next();
-};
-const routerLogger = (req, res, next) => {
-  console.log("PATH", req.path);
-  next();
-};
-
-app.use(methodLogger, routerLogger);
-
-
-//HANDLER
+//-----< CONTROLLER >-----
 const handleHome = (req, res) => {
   console.log("I will respond.");
   return res.send("Hello!");
 };
-
 const login = (req, res) => {
   return res.send("login");
 }
+
 
 app.get("/", handleHome);
 app.get("/login", login);
