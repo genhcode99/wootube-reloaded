@@ -20,9 +20,7 @@ app.use(logger);
 
 
 //HANDLER
-const handleHome = (req, res) => {
-  return res.send("I'love middleware");
-};
+const handleHome = (req, res) => res.send("Hello!");
 
 app.get("/", handleHome);
 
