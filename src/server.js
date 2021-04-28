@@ -8,19 +8,23 @@ const app = express();
 
 
 
-//app 설정
+//----------< app 설정 >----------
 
-const gossipMiddelware = (req, res, next) => {
-  console.log(`someone is going to : ${req.url} `);
+//MIDDLE WARE
+const logger = (req, res, next) => {
+  console.log(`${req.method} ${req.url} `);
   next();
 };
 
+app.use(logger);
 
+
+//HANDLER
 const handleHome = (req, res) => {
   return res.send("I'love middleware");
 };
 
-app.get("/", gossipMiddelware, handleHome);
+app.get("/", handleHome);
 
 
 //외부 접속 listen
