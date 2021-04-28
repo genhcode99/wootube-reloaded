@@ -10,15 +10,17 @@ const app = express();
 
 //app 설정
 
-const handleHome = (req, res) => {
-  return res.send("I still love you.");
+const gossipMiddelware = (req, res, next) => {
+  console.log(`someone is going to : ${req.url} `);
+  next();
 };
-const handleLogin = (req, res) => {return res.send("Login here.")};
-
-app.get("/", handleHome);
-app.get("/login", handleLogin);
 
 
+const handleHome = (req, res) => {
+  return res.send("I'love middleware");
+};
+
+app.get("/", gossipMiddelware, handleHome);
 
 
 //외부 접속 listen
