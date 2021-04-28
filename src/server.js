@@ -13,17 +13,24 @@ import logger from "morgan";
 app.use(logger("dev"));
 
 //-----< CONTROLLER >-----
-const handleHome = (req, res) => {
-  console.log("I will respond.");
-  return res.send("Hello!");
-};
-const login = (req, res) => {
-  return res.send("login");
-}
+const globalRouter = express.Router();
+const handleHome = (req, res) => res.send("home");
+globalRouter.get("/", handleHome);
 
+const videoRouter = express.Router();
+const handelWatchVideo = (req, res) => res.send("Watch Video");
+videoRouter.get("/watch", handelWatchVideo);
 
-app.get("/", handleHome);
-app.get("/login", login);
+const userRouter = express.Router();
+const handelEditUser = (req, res) => res.send("Edit User");
+userRouter.get("/edit", handelEditUser);
+
+app.use("/", globalRouter)
+app.use("/videos", videoRouter);
+app.use("/users", userRouter);
+
+// app.get("/", handleHome);
+// app.get("/login", handleLogin);
 
 //외부 접속 listen
 
