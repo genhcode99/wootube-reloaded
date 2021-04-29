@@ -5,17 +5,16 @@ const PORT = 4000;
 const app = express();
 
 
-console.log(process.cwd());
-
 //-----< Pug - 뷰 엔진을 퍼그로 세팅 >----- 
 app.set("view engine", "pug");
+
 
 //-----< Current Working Direcroty 변경 >
 app.set("views", process.cwd() + "/src/views"); 
 
+
 //-----< MIDDLE WARE >-----
 import logger from "morgan";
-
 
 app.use(logger("dev"));
 
@@ -24,7 +23,6 @@ app.use(logger("dev"));
 import globalRouter from "./routers/globalRouter";
 import videoRouter from "./routers/videoRouter"
 import userRouter from "./routers/userRouter"
-
 
 app.use("/", globalRouter);
 app.use("/videos", videoRouter);

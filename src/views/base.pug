@@ -2,9 +2,10 @@ doctype html
 html(lang="ko")
   head 
     title #{pageTitle} | Wootube
+    link(rel="stylesheet" href="https://unpkg.com/mvp.css")
   body 
+    main
+      block content
 
-    block content
-
-    //- Footer
-    include partials/footer.pug
+      //- Footer
+      include partials/footer.pug
