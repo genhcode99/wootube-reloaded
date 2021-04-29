@@ -5,6 +5,12 @@ const PORT = 4000;
 const app = express();
 
 
+console.log(process.cwd());
+
+//-----< Pug - 뷰 엔진을 퍼그로 세팅 >----- 
+app.set("view engine", "pug");
+
+
 //-----< MIDDLE WARE >-----
 import logger from "morgan";
 
