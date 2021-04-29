@@ -1,6 +1,11 @@
-export const trending = (req, res) => res.render("home", {pageTitle: "Home"});
-export const search = (req, res) => res.send("search");
+const fakeUser = {
+  username:"JeU",
+  loggedIn: false,
+};
 
+
+export const trending = (req, res) => res.render("home", {pageTitle: "Home", fakeUser});
+export const search = (req, res) => res.send("search");
 
 export const upload = (req, res) => res.send("Upload");
 export const see = (req, res) => res.render("watch");
