@@ -24,22 +24,30 @@ let videos = [
     id:3,
   },
   ];
-  
+
+// Home
 export const trending = (req, res) => {
   return res.render("home", {pageTitle: "Home", videos})
 };
 
-
+// Watch
 export const watch = (req, res) => {
   const {id} = req.params;
   const video = videos[id-1];
   return res.render("watch", { pageTitle: `Watching: ${video.title}`, video});
 };
 
+// Edit
 export const getEdit = (req, res) => {
   const {id} = req.params;
   const video = videos[id-1];
   return res.render("edit", {pageTitle:`Editing: ${video.title}`, video});
 };
+export const postEdit = (req, res) => {
+  //req.params 는 url 상 :id 또는 :something 을 가르키고, req.body 는 key-value의 데이터가 담긴 객체 프로퍼티이다. submit으로 key-value가 왔으므로 그것이 나오는 것.
+  const {id} = req.params;
+  const {title} = req.body;
 
-export const postEdit = (req, res) => { };
+  videos[id-1].title = title;
+  return res.redirect(`/videos/${id}`);
+};
