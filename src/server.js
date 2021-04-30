@@ -1,3 +1,6 @@
+// -----< Mongo DB 가져오기 >-----
+import "./db";
+
 //-----< Express app 선언 >-----
 import express from "express";
 
