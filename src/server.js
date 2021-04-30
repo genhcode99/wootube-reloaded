@@ -18,8 +18,9 @@ import logger from "morgan";
 
 app.use(logger("dev"));
 
-//-----< Express가 form 태그에서 제출된 정보를 자바스크립트로 이해시키는 방법 >-----
+  //  Express가 form 태그에서 제출된 정보를 자바스크립트로 이해시키는 방법의 미들웨어
 app.use(express.urlencoded({extended: true}));
+
 
 //-----< Router setting >-----
 import globalRouter from "./routers/globalRouter";

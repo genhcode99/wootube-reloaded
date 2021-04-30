@@ -25,29 +25,43 @@ let videos = [
   },
   ];
 
-// Home
+// -----< Home >-----
 export const trending = (req, res) => {
   return res.render("home", {pageTitle: "Home", videos})
 };
 
-// Watch
+
+// -----< Watch >-----
 export const watch = (req, res) => {
   const {id} = req.params;
   const video = videos[id-1];
   return res.render("watch", { pageTitle: `Watching: ${video.title}`, video});
 };
 
-// Edit
+
+// -----< Edit >-----
 export const getEdit = (req, res) => {
   const {id} = req.params;
   const video = videos[id-1];
   return res.render("edit", {pageTitle:`Editing: ${video.title}`, video});
 };
 export const postEdit = (req, res) => {
-  //req.params 는 url 상 :id 또는 :something 을 가르키고, req.body 는 key-value의 데이터가 담긴 객체 프로퍼티이다. submit으로 key-value가 왔으므로 그것이 나오는 것.
+
+  //req.params 는 url 상 :id 또는 :something 을 가르키고, req.body는 form에서 submit된 key-value 데이터 이다.
   const {id} = req.params;
   const {title} = req.body;
 
   videos[id-1].title = title;
   return res.redirect(`/videos/${id}`);
+};
+
+
+// -----< Upload >-----
+export const getUpload = (req, res) => {
+  return res.render("upload", {pageTitle:"Upload Video"});
+};
+
+export const postUpload = (req, res) => {
+  // here we will add a video to the videos array.
+  return res.redirect("/");
 };
