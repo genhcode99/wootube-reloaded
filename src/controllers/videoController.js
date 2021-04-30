@@ -71,6 +71,6 @@ export const postUpload = (req, res) => {
     views:0,
     id:videos.length +1,
   };
-  videos.push(newVideo)
+  videos.push(newVideo);
   return res.redirect("/");
 };
