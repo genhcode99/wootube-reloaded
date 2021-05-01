@@ -1,6 +1,11 @@
 // -----< Mongo DB 가져오기 >-----
 import "./db";
 
+
+// -----< Video DB 모델 가져오기 >-----
+import "./models/Video"
+
+
 //-----< Express app 선언 >-----
 import express from "express";
 
