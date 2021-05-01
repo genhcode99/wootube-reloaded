@@ -16,3 +16,5 @@ db.on("error", handleError);
   // DB 연결시 콘솔에 띄워줌 (한번)
 const handleOpen = () => console.log("Connected to DB ✅")
 db.once("open", handleOpen);
+
+//-----< create read update delete CRUD >-----
