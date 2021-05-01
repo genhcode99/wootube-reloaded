@@ -3,8 +3,12 @@ import Video from "../models/Video"
 
 // -----< Home >-----
 export const home = (req, res) => {
-  Video.find({},(error, videos) => {});
-  return res.render("home", {pageTitle: "Home", })
+  console.log("start");
+  Video.find({}, (error, videos) => {
+    console.log("Finished");
+    return res.render("home", {pageTitle: "Home", videos});
+  });
+  console.log("I Finish first")
 };
 
 
