@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 
 // -----< Video DB의 모델 모양을 설정: 스키마(개요) >-----
 const videoSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  createdAt: Date,
-  hashtags: [{type:String}],
+  title: {type: String, required: true},
+  description: {type: String, required: true},
+  createdAt: {type: Date, required: true, default: Date.now},
+  hashtags: [{type: String}],
   meta: {
-    views: Number,
-    rating: Number,
+    views: {type:Number, default:0 , required:true},
+    rating: {type:Number, default:0, required:true}
   }
 });
 

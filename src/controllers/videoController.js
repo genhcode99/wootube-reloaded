@@ -33,24 +33,43 @@ export const postEdit = (req, res) => {
 };
 
 
-// -----< Upload >-----
+// -----< Get Upload >-----
 export const getUpload = (req, res) => {
-  return res.render("upload", {pageTitle:"Upload Video"});
+
+  return res.render("upload", {
+
+    pageTitle: "Upload Video"
+
+  });
+
 };
 
+
+// -----< Post Upload >-----
 export const postUpload = async (req, res) => {
 
-  const {title, description, hashtags} = req.body;
-  await Video.create({
+  const {
     title,
     description,
-    createdAt: Date.now(),
-    hashtags: hashtags.split(",").map((word) => `#${word}`),
-    meta: {
-      views:0,
-      rating:0,
-    }
-  });
-  return res.redirect("/");
+    hashtags
+  } = req.body;
+
+  try {
+
+    await Video.create({
+
+      title,
+      description,
+      hashtags: hashtags.split(",").map((word) => `#${word}`)
+    });
+
+    return res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    return res.render("upload", {
+      pageTitle: "Upload Video",
+      errorMessage: error._message
+    });
+  }
 };
 
