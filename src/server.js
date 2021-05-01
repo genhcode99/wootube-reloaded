@@ -1,15 +1,7 @@
-// -----< Mongo DB 가져오기 >-----
-import "./db";
-
-
-// -----< Video DB 모델 가져오기 >-----
-import "./models/Video"
-
-
 //-----< Express app 선언 >-----
 import express from "express";
 
-const PORT = 4000;
+
 const app = express();
 
 
@@ -39,8 +31,5 @@ app.use("/", globalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 
+export default app;
 
-//-----< 외부 request 를 듣게 준비하고 있어라 >-----
-const handleListening = () => console.log(`✅ Server listening on port http://localhost:${PORT} ⛴`);
-
-app.listen(PORT, handleListening);

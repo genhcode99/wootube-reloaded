@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 // -----< Video DB의 모델 모양을 설정: 스키마(개요) >-----
 const videoSchema = new mongoose.Schema({
   title: String,
