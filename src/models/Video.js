@@ -13,16 +13,12 @@ const videoSchema = new mongoose.Schema({
   }
 });
 
-// -----< Mongoose Middle Ware 설정 >-----
-  // Upload 시 Hashtags에 #을 붙여주는 Middle Ware
-videoSchema.pre("save", async function(){
-  this.hashtags = this.hashtags[0]
-  .split(",")
-  .map(word => word.startsWith("#") ? word:`#${word}`);
+
+videoSchema.static("formatHashtags", function(hashtags){
+  return hashtags.split(",").map((word) => word.startsWith("#") ? word : `#${word}`)
 });
 
-
-// -----< Video DV의 모델을 정의 >-----
+// -----< Video DB의 모델을 정의 >-----
 const Video = mongoose.model("Video", videoSchema);
 
 
