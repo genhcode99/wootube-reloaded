@@ -15,15 +15,21 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const {id} = req.params;
   const video = await Video.findById(id);
-  console.log(video)
+  if (!video) {
+    return res.render("404", {pageTitle: "Video Not Found."});
+  }
   return res.render("watch", { pageTitle: video.title , video});
 };
 
 
 // -----< Edit >-----
-export const getEdit = (req, res) => {
+export const getEdit = async (req, res) => {
   const {id} = req.params;
-  return res.render("edit", {pageTitle:`Editing: `, });
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.render("404", {pageTitle: "Video Not Found."});
+  }
+  return res.render("edit", {pageTitle:`Edit: ${video.title}`, video});
 };
 export const postEdit = (req, res) => {
 
