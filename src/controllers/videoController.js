@@ -39,16 +39,18 @@ export const postEdit = async (req, res) => {
   //req.params 는 url 상 :id 또는 :something 을 가르키고, req.body는 form에서 submit된 key-value 데이터 이다.
   const {id} = req.params;
   const {title, description, hashtags} = req.body;
-  const video = await Video.findById(id);
+  const video = await Video.exists({ _id:id });
 
   if (!video) {
     return res.render("404", {pageTitle: "Video Not Found."});
   }
 
-  video.title = title;
-  video.description = description;
-  video.hashtags = hashtags.split(",").map((word) => word.startsWith("#") ? word : `#${word}`)
-  await video.save();
+  await Video.findByIdAndUpdate(id, {
+    title, 
+    description,
+    hashtags : hashtags.split(",").map((word) => word.startsWith("#") ? word : `#${word}`),
+  });
+ 
   return res.redirect(`/videos/${id}`);
 };
 
