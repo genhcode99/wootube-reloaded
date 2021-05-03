@@ -22,7 +22,7 @@ export const watch = async (req, res) => {
 };
 
 
-// -----< Edit >-----
+// -----< Get Edit >-----
 export const getEdit = async (req, res) => {
   const {id} = req.params;
   const video = await Video.findById(id);
@@ -31,12 +31,24 @@ export const getEdit = async (req, res) => {
   }
   return res.render("edit", {pageTitle:`Edit: ${video.title}`, video});
 };
-export const postEdit = (req, res) => {
+
+
+// -----< Post Edit >-----
+export const postEdit = async (req, res) => {
 
   //req.params 는 url 상 :id 또는 :something 을 가르키고, req.body는 form에서 submit된 key-value 데이터 이다.
   const {id} = req.params;
-  const {title} = req.body;
+  const {title, description, hashtags} = req.body;
+  const video = await Video.findById(id);
 
+  if (!video) {
+    return res.render("404", {pageTitle: "Video Not Found."});
+  }
+
+  video.title = title;
+  video.description = description;
+  video.hashtags = hashtags.split(",").map((word) => word.startsWith("#") ? word : `#${word}`)
+  await video.save();
   return res.redirect(`/videos/${id}`);
 };
 
@@ -56,11 +68,7 @@ export const getUpload = (req, res) => {
 // -----< Post Upload >-----
 export const postUpload = async (req, res) => {
 
-  const {
-    title,
-    description,
-    hashtags
-  } = req.body;
+  const {title, description, hashtags} = req.body;
 
   try {
 
@@ -68,17 +76,14 @@ export const postUpload = async (req, res) => {
       {
       title,
       description,
-      hashtags: hashtags.split(",").map((word) => `#${word}`)
+      hashtags: hashtags.split(",").map((word) => word.startsWith("#") ? word : `#${word}`)
       }
     );
 
     return res.redirect("/");
   } catch (error) {
     console.log(error);
-    return res.render("upload", {
-      pageTitle: "Upload Video",
-      errorMessage: error._message
-    });
+    return res.render("upload", {pageTitle: "Upload Video", errorMessage: error._message});
   }
 };
 
