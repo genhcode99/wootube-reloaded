@@ -23,11 +23,11 @@ app.use(express.urlencoded({extended: true}));
 
 
 //-----< Router setting >-----
-import globalRouter from "./routers/globalRouter";
+import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter"
 import userRouter from "./routers/userRouter"
 
-app.use("/", globalRouter);
+app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 

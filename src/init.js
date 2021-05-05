@@ -6,6 +6,10 @@ import "./db";
 import "./models/Video"
 
 
+// -----< User DB 모델 가져오기 >-----
+import "./models/User"
+
+
 // -----< 서버에서 app 가져오기 >-----
 import app from "./server"
 
