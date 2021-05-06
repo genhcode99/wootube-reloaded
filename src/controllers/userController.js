@@ -1,5 +1,8 @@
 // -----< User DB Model 가져오기 >-----
-import User from "../models/User"
+import User from "../models/User";
+
+// -----< bcrypt 가져오기 >-----
+import bcrypt from "bcrypt";
 
 // -----< Join (get) >-----
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
@@ -16,7 +19,6 @@ export const postJoin = async (req, res) => {
       errorMessage: "Password confirmation does not match."
     });
   }
-
 
   const exists = await User.exists({$or: [{username},{email}]})
   if(exists){
@@ -51,17 +53,23 @@ export const getLogin = (req, res) => res.render("login",{ pageTitle: "Log In" }
 // -----< Log In (post) >-----
 export const postLogin = async (req, res) => {
   const { username, password} = req.body;
-  const pageTitle = "Log In"
-  const exists = await User.exists({username})
-  if (!exists) {
+  const pageTitle = "Log In";
+  const user = await User.findOne({username})
+  if (!user) {
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "An account with this username does not exists."
     })
   }
-
-
-  res.end();
+  const ok = await bcrypt.compare(password, user.password);
+  if(!ok){
+    return res.status(400).render("login", {
+      pageTitle,
+      errorMessage: "Wrong password"
+    })
+  }
+  console.log("LOG USER IN! COMING SOON!")
+  return res.redirect("/")
 }
 
 
