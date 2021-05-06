@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt"
 import mongoose from "mongoose";
 
 
@@ -10,6 +11,11 @@ const userSchema = new mongoose.Schema({
   location: String,
 });
 
+// -----< Mongoose Middle Ware >-----
+          // password 보안
+userSchema.pre("save", async function(){
+  this.password = await bcrypt.hash(this.password, 5);
+});
 
 // -----< User DB의 모델을 정의 >-----
 const User = mongoose.model('User', userSchema);
