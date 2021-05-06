@@ -22,7 +22,7 @@ export const watch = async (req, res) => {
 };
 
 
-// -----< Get Edit >-----
+// -----< Edit (get) >-----
 export const getEdit = async (req, res) => {
   const {id} = req.params;
   const video = await Video.findById(id);
@@ -33,7 +33,7 @@ export const getEdit = async (req, res) => {
 };
 
 
-// -----< Post Edit >-----
+// -----< Edit (post) >-----
 export const postEdit = async (req, res) => {
 
   //req.params 는 url 상 :id 또는 :something 을 가르키고, req.body는 form에서 submit된 key-value 데이터 이다.
@@ -55,7 +55,7 @@ export const postEdit = async (req, res) => {
 };
 
 
-// -----< Get Upload >-----
+// -----< Upload (get) >-----
 export const getUpload = (req, res) => {
 
   return res.render("upload", {
@@ -67,7 +67,7 @@ export const getUpload = (req, res) => {
 };
 
 
-// -----< Post Upload >-----
+// -----< Upload (post) >-----
 export const postUpload = async (req, res) => {
 
   const {title, description, hashtags} = req.body;
