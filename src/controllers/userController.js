@@ -1,11 +1,21 @@
+// -----< User DB Model 가져오기 >-----
+import User from "../models/User"
+
 // -----< Get Join >-----
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 
 
 // -----< Post Join >-----
-export const postJoin =(req, res) => {
-  console.log(req.body)
-  res.end();
+export const postJoin = async (req, res) => {
+  const { name, username, email, password, location} = req.body
+  await User.create({
+    name,
+    username,
+    email,
+    password,
+    location,
+  })
+  res.redirect("/login");
 };
 
 export const login = (req, res) => res.send("Login");

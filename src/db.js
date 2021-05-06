@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 // -----< Mongo DB 연결 >-----
 mongoose.connect("mongodb://127.0.0.1:27017/wootube", {
-  useUnifiedTopology: true, 
   useNewUrlParser: true,
+  useUnifiedTopology: true, 
   useFindAndModify: false,
+  useCreateIndex: true
 });
 
 // -----< DB 연결상태 >-----
