@@ -1,7 +1,6 @@
 //-----< Express app 선언 >-----
 import express from "express";
 
-
 const app = express();
 
 //-----< Import >-----

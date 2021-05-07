@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 import mongoose from "mongoose";
 
 // -----< Mongo DB 연결 >-----

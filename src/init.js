@@ -1,3 +1,7 @@
+// -----< Dotenv 패키지는 숨겨야할 정보를 env 파일에서 지정하고, 가져오게 해준다. >-----
+import "dotenv/config";
+
+
 // -----< Mongo DB 가져오기 >-----
 import "./db";
 
