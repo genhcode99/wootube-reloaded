@@ -26,6 +26,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
 }))
+
 app.use((req, res, next) => {
   req.sessionStore.all((error, session)=>{
     console.log(session);
@@ -41,11 +42,6 @@ app.use(express.urlencoded({extended: true}));
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter"
 import userRouter from "./routers/userRouter"
-
-app.get("/add-one", (req, res, next) => {
-  req.session.potato += 1;
-  return res.send(`${req.session.id} potato: ${req.session.potato}`);
-})
 
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
