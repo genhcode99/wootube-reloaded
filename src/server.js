@@ -31,13 +31,13 @@ app.use(logger("dev"));
 
       //세션 (로그인 상태 쿠키 등을 제어)  
 app.use(session({
-  secret: "Hello!",
+  secret: process.env.COOKIE_SECRET,
   //모든 방문자에게 쿠키를 주지않고,
   //로그인 한 User 에게만 쿠키를 주기위해,
   //{ resave, saveUninitialized }:false => session 의 정보가 추가 되거나 변형되었을때만 쿠키를 준다.
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({mongoUrl: "mongodb://127.0.0.1:27017/wootube"}),
+  store: MongoStore.create({mongoUrl: process.env.DB_URL }),
 }))
 
       //Local Middle Ware
