@@ -1,8 +1,11 @@
 // -----< User DB Model 가져오기 >-----
 import User from "../models/User";
 
-// -----< bcrypt 가져오기 >-----
+
+// -----<가져오기 >-----
+import fetch from "node-fetch"
 import bcrypt from "bcrypt";
+
 
 // -----< Join (get) >-----
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
@@ -91,23 +94,36 @@ export const startGithubLogin = (req, res) => {
   return res.redirect(finalURL);
 };
 
-export const finishGithubLogin = async(req, res) => {
+export const finishGithubLogin = async (req, res) => {
   const baseURL = "https://github.com/login/oauth/access_token"
   const config = {
     client_id: process.env.GH_CLIENT,
     client_secret: process.env.GH_SECRET,
-    code: req.query.code
+    code: req.query.code,
   };
   const params = new URLSearchParams(config).toString();
   const finalURL = `${baseURL}?${params}`;
-  const data = await fetch(finalURL,{
-    method: "POST",
-    headers: {
-      Accept: application/json,
-    },
-  });
-  const json= await data.json();
-  console.log(json);
+  const tokenRequest = await (
+    await fetch(finalURL, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })).json();
+  if ("access_token" in tokenRequest) {
+    const {
+      access_token
+    } = tokenRequest;
+    const userRequest = await (
+      await fetch("https://api.github.com/user", {
+        hearders: {
+          Authorization: `token ${access_token}`,
+        }
+      })).json();
+    console.log(userRequest);
+  } else {
+    return res.redirect("/login")
+  }
 }
 
 
