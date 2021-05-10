@@ -1,7 +1,8 @@
 // -----< User DB Model 가져오기 >-----
 import User from "../models/User";
 
-// -----< bcrypt 가져오기 >-----
+// -----< 가져오기 >-----
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
 // -----< Join (get) >-----
@@ -100,14 +101,25 @@ export const finishGithubLogin = async (req, res) => {
   };
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
-  const data = await fetch(finalUrl, {
+  const tokenRequest = await (await fetch(finalUrl, {
     method: "POST",
     headers:{
       Accept: "application/json",
     },
-  });
-  const json = await date.json();
-  console.log(json);
+  })).json();
+  if ("access_token" in tokenRequest) {
+    const {
+      access_token
+    } = tokenRequest;
+    const userRequest = await (await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `token ${access_token}`
+      },
+    })).json();
+    console.log(userRequest);
+  } else {
+    return res.redirect("/login");
+  }
 };
 
 
