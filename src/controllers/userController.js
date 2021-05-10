@@ -5,6 +5,7 @@ import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
+
 // -----< Join (get) >-----
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 
