@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 // -----< User DB의 스키마 만들기 >-----
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
+  avatarUrl: String,
   socialOnly : { type : Boolean, default : false },
   username: { type: String, required: true, unique: true },
   password: { type: String},
