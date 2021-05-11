@@ -5,3 +5,21 @@ export const localMiddleware = (req, res, next) => {
   console.log(res.locals);
   next();
 }
+
+
+export const protectorMiddleware = (req, res, next) => {
+  if(req.session.loggedIn){
+    return next();
+  }else{
+    return res.redirect("/login");
+  }
+};
+
+
+export const publicOnlyMiddelware = (req, res, next) => {
+  if(!req.session.loggedIn){
+    return next();
+  }else{
+    return res.redirect("/");
+  }
+};
