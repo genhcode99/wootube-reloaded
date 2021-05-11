@@ -22,3 +22,5 @@ export const publicOnlyMiddelware = (req, res, next) => {
     return res.redirect("/");
   }
 };
+
+

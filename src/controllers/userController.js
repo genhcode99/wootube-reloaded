@@ -228,7 +228,15 @@ export const getchangePassword = (req, res) => {
 
 
 // -----< Change Password (post) >-----
-export const postchangePassword = (req, res) => {
+export const postchangePassword = async (req, res) => {
+  const { _id } = req.session.user;
+  const { oldPassword, newPassword, newPassword2 } = req.body;
+  if(newPassword !== newPassword2){
+    return res.status(400).render("users/change-password",{
+      pageTitle:"Change Password",
+      errorMessage:"The password does not match the confirmation",
+    });
+  }
   //send notification!
   return res.redirect("/");
 };
