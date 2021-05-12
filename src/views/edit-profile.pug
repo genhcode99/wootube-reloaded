@@ -1,6 +1,7 @@
 extends base
 
 block content
+  img(src="/" + loggedInUser.avatarUrl, alt="Avatar Image", width="100px", height="100px")
   if errorMessage 
     span=errorMessage
   form(method="POST", enctype="multipart/form-data")
