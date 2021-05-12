@@ -42,7 +42,7 @@ userRouter
 userRouter
   .get("/github/finish", publicOnlyMiddelware, finishGithubLogin);
 
-// See
+// My Profile
 userRouter
   .get("/:id", see);
 
