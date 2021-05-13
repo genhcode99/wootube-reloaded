@@ -17,13 +17,17 @@ const userSchema = new mongoose.Schema({
 });
 
 // -----< Mongoose Middle Ware >-----
-          // password 보안
+// password 보안
 userSchema.pre("save", async function(){
+  //isModified 는 수정되었을때 라는 의미로 생각하면됨!
+  //Pass word 가 변경사항이 있을때 해쉬로 변환하라 라는 뜻!
+  if(this.isModified("password")) {
   this.password = await bcrypt.hash(this.password, 5);
-});
+}});
 
 // -----< User DB의 모델을 정의 >-----
 const User = mongoose.model('User', userSchema);
 
 
 export default User;
+
