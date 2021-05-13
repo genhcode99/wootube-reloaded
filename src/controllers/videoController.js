@@ -15,12 +15,13 @@ export const home = async (req, res) => {
 // -----< Watch >-----
 export const watch = async (req, res) => {
   const {id} = req.params;
-  const video = await Video.findById(id);
-  const owner = await User.findById(video.owner);
+  //populate : (몽구스) 연결된 다른 모델의 정보를 가져온다.
+  const video = await Video.findById(id).populate("owner");
+  
   if (!video) {
     return res.render("404", {pageTitle: "Video Not Found."});
   }
-  return res.render("watch", { pageTitle: video.title , video, owner});
+  return res.render("watch", { pageTitle: video.title , video });
 };
 
 
