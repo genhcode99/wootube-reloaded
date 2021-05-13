@@ -8,29 +8,44 @@ import bcrypt from "bcrypt";
 
 
 // -----< Join (get) >-----
-export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
+export const getJoin = (req, res) => res.render("join", {
+  pageTitle: "Join"
+});
 
 
 // -----< Join (post) >-----
 export const postJoin = async (req, res) => {
-  const { name, username, email, password, password2, location} = req.body;
+  const {
+    name,
+    username,
+    email,
+    password,
+    password2,
+    location
+  } = req.body;
   const pageTitle = "Join";
 
-  if(password !== password2){
+  if (password !== password2) {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "Password confirmation does not match."
     });
   }
 
-  const exists = await User.exists({$or: [{username},{email}]})
-  if(exists){
+  const exists = await User.exists({
+    $or: [{
+      username
+    }, {
+      email
+    }]
+  })
+  if (exists) {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "This username/email is already taken."
     });
   }
-  
+
   try {
     await User.create({
       name,
@@ -40,7 +55,7 @@ export const postJoin = async (req, res) => {
       location,
     });
     res.redirect("/login");
-  } catch(error){
+  } catch (error) {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: error._message,
@@ -50,15 +65,23 @@ export const postJoin = async (req, res) => {
 
 
 // -----< Log In (get) >-----
-export const getLogin = (req, res) => res.render("login",{ pageTitle: "Log In" });
+export const getLogin = (req, res) => res.render("login", {
+  pageTitle: "Log In"
+});
 
 
 // -----< Log In (post) >-----
 export const postLogin = async (req, res) => {
 
-  const { username, password } = req.body;
+  const {
+    username,
+    password
+  } = req.body;
   const pageTitle = "Log In";
-  const user = await User.findOne({ username, socialOnly : false })
+  const user = await User.findOne({
+    username,
+    socialOnly: false
+  })
 
   if (!user) {
     return res.status(400).render("login", {
@@ -68,7 +91,7 @@ export const postLogin = async (req, res) => {
   }
 
   const ok = await bcrypt.compare(password, user.password);
-  if(!ok){
+  if (!ok) {
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "Wrong password"
@@ -77,7 +100,7 @@ export const postLogin = async (req, res) => {
 
   req.session.loggedIn = true;
   req.session.user = user;
-  
+
   return res.redirect("/")
 }
 
@@ -109,15 +132,16 @@ export const finishGithubLogin = async (req, res) => {
   const finalUrl = `${baseUrl}?${params}`;
 
   const tokenRequest = await (await fetch(finalUrl, {
-      method: "POST",
-      headers:{
-        Accept: "application/json",
-      },
-    })
-  ).json();
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+  })).json();
 
   if ("access_token" in tokenRequest) {
-    const { access_token } = tokenRequest;
+    const {
+      access_token
+    } = tokenRequest;
     const apiUrl = "https://api.github.com";
 
     // User Data
@@ -132,36 +156,38 @@ export const finishGithubLogin = async (req, res) => {
 
     // Email Date
     const emailData = await (
-      await fetch(`${apiUrl}/user/emails`,{
+      await fetch(`${apiUrl}/user/emails`, {
         headers: {
           Authorization: `token ${access_token}`,
         },
       })
     ).json();
 
-    const emailObj = emailData.find((email)=> email.primary === true && email.verified === true);
+    const emailObj = emailData.find((email) => email.primary === true && email.verified === true);
 
-    if(!emailObj){
+    if (!emailObj) {
       // set notification
       return res.redirect("/login");
     }
 
-    let user = await User.findOne({email: emailObj.email});
+    let user = await User.findOne({
+      email: emailObj.email
+    });
 
-    if(!user){
+    if (!user) {
       user = await User.create({
         avatarUrl: userData.avatar_url,
-        name : userData.name? userData.name : "Unknown",
-        username : userData.login,
+        name: userData.name ? userData.name : "Unknown",
+        username: userData.login,
         email: emailObj.email,
-        password : "",
+        password: "",
         socialOnly: true,
-        location : userData.location,
+        location: userData.location,
       });
     }
-      req.session.loggedIn = true;
-      req.session.user = user;
-      return res.redirect("/");
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
   } else {
     return res.redirect("/login");
   }
@@ -176,38 +202,54 @@ export const logout = (req, res) => {
 
 // -----< Edit (get) >-----
 export const getEdit = (req, res) => {
-  return res.render("edit-profile", {pageTitle:"Edit Profile"});
+  return res.render("edit-profile", {
+    pageTitle: "Edit Profile"
+  });
 };
 
 
 // -----< Edit (post) >-----
 export const postEdit = async (req, res) => {
 
-  const { 
-    session: { user: { _id, avatarUrl } },
-    body: { name, email, username, location },
+  const {
+    session: {
+      user: {
+        _id,
+        avatarUrl
+      }
+    },
+    body: {
+      name,
+      email,
+      username,
+      location
+    },
     file,
-  }=req;
+  } = req;
 
-  const exists = await User.exists({$or: [{username},{email}]})
-  if(exists){
+  const exists = await User.exists({
+    $or: [{
+      username
+    }, {
+      email
+    }]
+  })
+  if (exists) {
     return res.status(400).render("edit-profile", {
-      pageTitle:"Edit Profile",
+      pageTitle: "Edit Profile",
       errorMessage: "This username/email is already taken."
     });
   };
-  
+
   const updatedUser = await User.findByIdAndUpdate(
-    _id, 
-    { 
+    _id, {
       avatarUrl: file ? file.path : avatarUrl,
       name,
       email,
       username,
       location,
-    },
-    { 
-    new:true
+    }, {
+      new: true
     }
   );
   req.session.user = updatedUser;
@@ -217,33 +259,40 @@ export const postEdit = async (req, res) => {
 
 // -----< Change Password (get) >-----
 export const getchangePassword = (req, res) => {
-  if(req.session.user.socialOnly){
+  if (req.session.user.socialOnly) {
     return res.redirect("/")
   }
-  return res.render("change-password",{pageTitle:"Change Password"})
+  return res.render("change-password", {
+    pageTitle: "Change Password"
+  })
 };
 
 
 // -----< Change Password (post) >-----
 export const postchangePassword = async (req, res) => {
-  
 
-  const { oldPassword, newPassword, newPassword2 } = req.body;
-  const { _id } = req.session.user;
+  const {
+    oldPassword,
+    newPassword,
+    newPassword2
+  } = req.body;
+  const {
+    _id
+  } = req.session.user;
   const user = await User.findById(_id);
-  const ok = await bcrypt.compare(oldPassword, user.password )
+  const ok = await bcrypt.compare(oldPassword, user.password)
   // 지금 현재의 비밀번호가 맞는지 확인
-  if(!ok){
-    return res.status(400).render("users/change-password",{
-      pageTitle:"Change Password",
-      errorMessage:"The current password is incorrect",
-    }); 
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect",
+    });
   }
   //새로운 비밀번호와 비밀번호확인이 같은지 확인
-  if(newPassword !== newPassword2){
-    return res.status(400).render("users/change-password",{
-      pageTitle:"Change Password",
-      errorMessage:"The password does not match the confirmation",
+  if (newPassword !== newPassword2) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The password does not match the confirmation",
     });
   }
   //users DB에 새로운 비밀번호를 저장 
@@ -260,16 +309,19 @@ export const postchangePassword = async (req, res) => {
 
 // My Profile
 export const see = async (req, res) => {
-  const { id }= req.params;
+  const {
+    id
+  } = req.params;
   const user = await User.findById(id).populate("videos");
-  
+
   if (!user) {
-    return res.status(400).render("404", {pageTitle:"User not found."});
+    return res.status(400).render("404", {
+      pageTitle: "User not found."
+    });
   }
-  
+
   return res.render("profile", {
     pageTitle: user.name,
     user,
-    }
-  );
+  });
 };

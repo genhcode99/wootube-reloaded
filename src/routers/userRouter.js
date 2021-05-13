@@ -19,7 +19,7 @@ import {
 const userRouter = express.Router();
 
 // Log Out
-userRouter.get("/logout", protectorMiddleware,logout);
+userRouter.get("/logout", protectorMiddleware, logout);
 
 // Edit Profile
 userRouter
