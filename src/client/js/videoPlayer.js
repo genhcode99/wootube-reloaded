@@ -1,7 +1,5 @@
 //-----< Import to World >----
 const video = document.querySelector("video")
-const time = document.getElementById("time");
-
 
 
 //-----< Play and Pause >-----
@@ -55,3 +53,20 @@ const handleVolumeChange = (event) => {
 };
 
 volumeRange.addEventListener("input", handleVolumeChange);
+
+//-----< Video Timer >-----
+// # import
+const currentTime = document.getElementById("currentTime");
+const totalTime = document.getElementById("totalTime");
+
+// # 
+const handelLoadedmetadata = () => {
+  totalTime.innerText = Math.floor(video.duration);
+  //Math.floor : 소수점 아래를 버림 한다. Math.ceil : 소수점 아래를 올림 한다. 
+};
+const handleTimeUpdate = () => {
+  currentTime.innerText = Math.floor(video.currentTime);
+};
+
+video.addEventListener("loadedmetadata", handelLoadedmetadata);
+video.addEventListener("timeupdate", handleTimeUpdate);
