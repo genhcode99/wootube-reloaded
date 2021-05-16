@@ -59,14 +59,18 @@ volumeRange.addEventListener("input", handleVolumeChange);
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 
-// # 
+// # Count Time (text)
+const formatTime = (seconds) => new Date(seconds * 1000).toISOString().substr(11, 8);
 const handelLoadedmetadata = () => {
-  totalTime.innerText = Math.floor(video.duration);
+  totalTime.innerText = formatTime(Math.floor(video.duration));
   //Math.floor : 소수점 아래를 버림 한다. Math.ceil : 소수점 아래를 올림 한다. 
 };
 const handleTimeUpdate = () => {
-  currentTime.innerText = Math.floor(video.currentTime);
+  currentTime.innerText = formatTime(Math.floor(video.currentTime));
 };
 
 video.addEventListener("loadedmetadata", handelLoadedmetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
+
+
+//--------------------
