@@ -1,12 +1,21 @@
-//-----< Import to World >----
-const video = document.querySelector("video")
+//-----< World >----
+const video = document.querySelector("video");
+const playBtn = document.getElementById("play");
+const muteBtn = document.getElementById("mute");
+const volumeRange = document.getElementById("volume");
+const currentTime = document.getElementById("currentTime");
+const totalTime = document.getElementById("totalTime");
+const timeline = document.getElementById("timeline");
+const fullScreenBtn = document.getElementById("fullScreen")
+const videoContainer = document.getElementById("videoContainer");
+const videoControls = document.getElementById("videoControls");
+
+let controlsTimeout = null;
+let volumeValue = 0.5;
+video.volume = volumeValue;
 
 
 //-----< Play and Pause >-----
-// # import
-const playBtn = document.getElementById("play");
-
-// # play and pause
 const handlePlayClick = (event) => {
   if (video.paused) {
     video.play();
@@ -19,13 +28,7 @@ const handlePlayClick = (event) => {
 playBtn.addEventListener("click", handlePlayClick);
 
 
-
 //-----< Sound >-----
-// # import
-const muteBtn = document.getElementById("mute");
-const volumeRange = document.getElementById("volume");
-let volumeValue = 0.5;
-video.volume = volumeValue;
 
 // # mute
 const handleMute = (event) => {
@@ -55,14 +58,6 @@ const handleVolumeChange = (event) => {
 volumeRange.addEventListener("input", handleVolumeChange);
 
 //-----< Video TimeLine >-----
-// # import
-const currentTime = document.getElementById("currentTime");
-const totalTime = document.getElementById("totalTime");
-const timeline = document.getElementById("timeline");
-const fullScreenBtn = document.getElementById("fullScreen")
-const videoContainer = document.getElementById("videoContainer");
-
-// # timeLine
 const formatTime = (seconds) => new Date(seconds * 1000).toISOString().substr(11, 8);
 const handleLoadedmetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
@@ -82,7 +77,7 @@ video.addEventListener("loadedmetadata", handleLoadedmetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
 timeline.addEventListener("input", handleTimelineChange);
 
-// # full screen
+//-----< full screen >-----
 const handleFullscreen = () => {
   const fullScreen = document.fullscreenElement;
   if (fullScreen) {
@@ -96,4 +91,22 @@ const handleFullscreen = () => {
 
 fullScreenBtn.addEventListener("click", handleFullscreen);
 
-//--------------------
+//-----< Showing controls >-----
+
+
+const handleMouseMove = () => {
+  if (controlsTimeout) {
+    clearTimeout(controlsTimeout);
+    controlsTimeout = null;
+  }
+  videoControls.classList.add("showing");
+};
+
+const handleMouseLeave = () => {
+  controlsTimeout = setTimeout(() => {
+    videoControls.classList.remove("showing");
+  }, 1000);
+};
+
+video.addEventListener("mousemove", handleMouseMove);
+video.addEventListener("mouseleave", handleMouseLeave);
