@@ -54,23 +54,31 @@ const handleVolumeChange = (event) => {
 
 volumeRange.addEventListener("input", handleVolumeChange);
 
-//-----< Video Timer >-----
+//-----< Video TimeLine >-----
 // # import
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
+const timeline = document.getElementById("timeline");
 
-// # Count Time (text)
+// # Function
 const formatTime = (seconds) => new Date(seconds * 1000).toISOString().substr(11, 8);
-const handelLoadedmetadata = () => {
+const handleLoadedmetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
-  //Math.floor : 소수점 아래를 버림 한다. Math.ceil : 소수점 아래를 올림 한다. 
+  //Math.floor : 소수점 아래를 버림 한다. Math.ceil : 소수점 아래를 올림 한다.
+  timeline.max = video.duration;
 };
 const handleTimeUpdate = () => {
   currentTime.innerText = formatTime(Math.floor(video.currentTime));
+  timeline.value = Math.floor(video.currentTime);
+};
+const handleTimelineChange = (event) => {
+  const value = event.target.value;
+  video.currentTime = value;
 };
 
-video.addEventListener("loadedmetadata", handelLoadedmetadata);
+video.addEventListener("loadedmetadata", handleLoadedmetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
+timeline.addEventListener("input", handleTimelineChange);
 
 
 //--------------------
