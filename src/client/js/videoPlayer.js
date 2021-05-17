@@ -27,6 +27,7 @@ const handlePlayClick = (event) => {
 };
 
 playBtn.addEventListener("click", handlePlayClick);
+video.addEventListener("click", handlePlayClick);
 
 
 //-----< Sound >-----
@@ -91,6 +92,7 @@ const handleFullscreen = () => {
 };
 
 fullScreenBtn.addEventListener("click", handleFullscreen);
+video.addEventListener("dblclick", handleFullscreen);
 
 //-----< Showing controls >-----
 const hideControls = () => videoControls.classList.remove("showing");
