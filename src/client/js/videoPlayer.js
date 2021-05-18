@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
 const playBtnIcon = playBtn.querySelector("i");
@@ -11,6 +13,7 @@ const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
+
 
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
@@ -114,6 +117,15 @@ const handleKeydown = (event) => {
   }
 };
 
+const handleEnded = () => {
+  const {
+    id
+  } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/views`, {
+    method: "post"
+  });
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 video.addEventListener("click", handlePlayClick);
 document.addEventListener("keydown", handleKeydown);
@@ -126,3 +138,4 @@ videoContainer.addEventListener("mouseleave", handleMouseLeave);
 timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullscreen);
 video.addEventListener("dblclick", handleFullscreen);
+video.addEventListener("ended", handleEnded);
