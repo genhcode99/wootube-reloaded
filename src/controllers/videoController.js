@@ -203,3 +203,15 @@ export const search = async (req, res) => {
     videos
   });
 }
+
+//-----< View Count >-----
+export const registerView = async (req, res) => {
+  const id = req.params.id;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.status(404);
+  }
+  video.mota.views = video.modifiedPaths.views + 1;
+  await video.save();
+  return res.status(200);
+};
