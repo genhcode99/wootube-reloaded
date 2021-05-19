@@ -6,6 +6,7 @@ import {
 
 const startBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview");
+const resetBtn = document.getElementById("resetBtn");
 
 let stream;
 let recorder;
@@ -53,14 +54,20 @@ const handleDownload = async () => {
   a.download = "MyRecording.mp4";
   document.body.appendChild(a);
   a.click();
-  location.reload();
 
   const thumbA = document.createElement("a");
   thumbA.href = thumbUrl;
   thumbA.download = "MyThumbnail.jpg";
   document.body.appendChild(thumbA);
   thumbA.click();
-  location.reload();
+
+  ffmpeg.FS("unlink", "recording.webm");
+  ffmpeg.FS("unlink", "output.mp4");
+  ffmpeg.FS("unlink", "thumbnail.jpg");
+
+  URL.revokeObjectURL(mp4Url);
+  URL.revokeObjectURL(thumbUrl);
+  URL.revokeObjectURL(videoFile);
 };
 
 
@@ -103,3 +110,9 @@ init();
 
 
 startBtn.addEventListener("click", handleStart);
+
+
+const handleResetBtn = () => {
+  location.reload();
+};
+resetBtn.addEventListener("click", handleResetBtn);
