@@ -197,6 +197,7 @@ export const finishGithubLogin = async (req, res) => {
 // -----< Log Out >-----
 export const logout = (req, res) => {
   req.session.destroy();
+  req.flash("info", "Bye Bye");
   return res.redirect("/");
 }
 
@@ -260,6 +261,7 @@ export const postEdit = async (req, res) => {
 // -----< Change Password (get) >-----
 export const getchangePassword = (req, res) => {
   if (req.session.user.socialOnly) {
+    req.flash("error", "Can't change password");
     return res.redirect("/")
   }
   return res.render("change-password", {
@@ -300,6 +302,7 @@ export const postchangePassword = async (req, res) => {
   user.password = newPassword;
   console.log("New unhashed password", user.password);
   await user.save();
+  req.flash("error", "Password updated");
   console.log("new pass word", user.password);
   //send notification!
 
@@ -309,15 +312,11 @@ export const postchangePassword = async (req, res) => {
 
 // My Profile
 export const see = async (req, res) => {
-  const {
-    id
-  } = req.params;
+  const { id } = req.params;
   const user = await User.findById(id).populate("videos");
 
   if (!user) {
-    return res.status(400).render("404", {
-      pageTitle: "User not found."
-    });
+    return res.status(400).render("404", { pageTitle: "User not found." });
   }
 
   return res.render("profile", {

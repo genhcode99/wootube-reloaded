@@ -14,6 +14,7 @@ import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 import apiRouter from "./routers/apiRouter";
+import flash from "express-flash";
 
 
 //-----< Pug - 뷰 엔진을 퍼그로 세팅 >----- 
@@ -24,15 +25,15 @@ app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 
 
-//-----< MIDDLE WARE >-----
+//--------------------< Middle Ware >--------------------
+//사용자에게 알림 기능을 주는 미들웨어
+app.use(flash());
 //Logger
 app.use(logger("dev"));
-
 //Express가 form 태그에서 제출된 정보를 자바스크립트로 이해시키는 방법의 미들웨어
 app.use(express.urlencoded({
       extended: true
 }));
-
 //세션 (로그인 상태 쿠키 등을 제어)  
 app.use(session({
       secret: process.env.COOKIE_SECRET,
@@ -46,7 +47,7 @@ app.use(session({
       }),
 }))
 
-//Local Middle Ware
+//--------------------< Local Middle Ware >--------------------
 app.use(localMiddleware);
 
 //-----< Router setting >-----
