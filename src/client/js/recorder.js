@@ -1,5 +1,16 @@
+//--------------------< Import >--------------------
+import {
+  createFFmpeg,
+  fetchFile
+} from "@ffmpeg/ffmpeg";
+import {
+  async
+} from "regenerator-runtime";
+
+
 //--------------------< Definition >--------------------
 const startBtn = document.getElementById("startBtn");
+const resetBtn = document.getElementById("resetBtn");
 const video = document.getElementById("preview");
 
 let stream;
@@ -8,12 +19,22 @@ let videoFile;
 
 
 //--------------------< Function >--------------------
-const handleDownload = () => {
+const handleDownload = async () => {
+  // # ffmpeg
+  const ffmpeg = createFFmpeg({
+    log: true
+  });
+  await ffmpeg.load();
+  ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
+  await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
+
+
   const a = document.createElement("a");
   a.href = videoFile;
   a.download = "Myrecording.webm";
   document.body.appendChild(a);
   a.click();
+  // location.reload();
 };
 
 
@@ -36,6 +57,7 @@ const handleStart = () => {
 
   recorder.ondataavailable = (event) => {
     videoFile = URL.createObjectURL(event.data);
+    console.log(videoFile);
     video.srcObject = null;
     video.src = videoFile;
     video.loop = true;
@@ -58,3 +80,9 @@ const init = async () => {
 init();
 
 startBtn.addEventListener("click", handleStart);
+
+const handleresetBtn = () => {
+  location.reload();
+}
+
+resetBtn.addEventListener("click", handleresetBtn);
