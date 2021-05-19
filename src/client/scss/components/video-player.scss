@@ -3,6 +3,12 @@
   position: relative;
   video {
     display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  .full {
+    display: block;
     width: auto;
     height: 100%;
     margin: 0 auto;

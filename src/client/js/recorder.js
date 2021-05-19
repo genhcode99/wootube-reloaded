@@ -80,11 +80,13 @@ const handleDownload = async () => {
   actionBtn.disabled = false;
   actionBtn.innerText = " Record Again";
   actionBtn.addEventListener("click", handleStart);
+
+  location.reload();
 };
 
 
 const handleStop = () => {
-  actionBtn.innerText = "Download Recording";
+  actionBtn.innerText = "Download";
   actionBtn.removeEventListener("click", handleStop);
   actionBtn.addEventListener("click", handleDownload);
   recorder.stop();
@@ -113,7 +115,10 @@ const handleStart = () => {
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: true,
+    video: {
+      width: 1024,
+      height: 576
+    },
   });
   video.srcObject = stream;
   video.play();

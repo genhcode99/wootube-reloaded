@@ -25,6 +25,8 @@ export const publicOnlyMiddelware = (req, res, next) => {
   }
 };
 
+
+//--------------------< Multer >-------------------
 export const avatarUpload = multer({
   dest: "uploads/avatar/",
   limits: {
@@ -38,3 +40,5 @@ export const videoUpload = multer({
     fileSize: 100000000,
   },
 });
+
+//--------------------------------------------------

@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { async } from "regenerator-runtime";
 
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
@@ -58,7 +59,7 @@ const handleVolumeChange = (event) => {
 const formatTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substr(14, 5);
 
-const handleLoadedMetadata = () => {
+const handleLoadedMetadata = async() => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
   timeline.max = Math.floor(video.duration);
 };
@@ -80,9 +81,11 @@ const handleTimelineChange = (event) => {
 const handleFullscreen = () => {
   const fullscreen = document.fullscreenElement;
   if (fullscreen) {
+    video.classList = null
     document.exitFullscreen();
     fullScreenIcon.classList = "fas fa-expand";
   } else {
+    video.classList = "full"
     videoContainer.requestFullscreen();
     fullScreenIcon.classList = "fas fa-compress";
   }
