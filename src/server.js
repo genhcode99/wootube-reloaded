@@ -26,7 +26,7 @@ app.set("views", process.cwd() + "/src/views");
 
 
 //--------------------< Middle Ware >--------------------
-//사용자에게 알림 기능을 주는 미들웨어
+//사용자에게 알림 기능을 주는 미들웨어 (local 으로 들어가서 바로 템플릿에서 사용 가능하다.)
 app.use(flash());
 //Logger
 app.use(logger("dev"));
