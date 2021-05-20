@@ -14,7 +14,7 @@ import "./models/Video"
 import "./models/User"
 
 
-// -----< User DB 모델 가져오기 >-----
+// -----< Comment DB 모델 가져오기 >-----
 import "./models/Comment"
 
 
