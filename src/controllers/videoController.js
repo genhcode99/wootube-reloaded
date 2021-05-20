@@ -1,6 +1,7 @@
 // --------------------< DB 가져오기 >--------------------
 import User from "../models/User";
 import Video from "../models/Video"
+import Comment from "../models/Comment"
 
 
 // --------------------< Home >--------------------
@@ -161,8 +162,21 @@ export const registerView = async (req, res) => {
 };
 
 // --------------------< Comment >--------------------
-export const createComment = (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
-  return res.end();
+export const createComment = async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+  const { user } = req.session;
+  const video = await Video.findById(id);
+
+  if(!video){
+    return res.sendStatus(404);
+  }
+
+  const comment = await Comment.create({
+    text,
+    owner: user._id,
+    video : id,
+  });
+
+  return res.sendStatus(201);
 };
