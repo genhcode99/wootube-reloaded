@@ -31,9 +31,9 @@ app.use(flash());
 //Logger
 app.use(logger("dev"));
 //Express가 form 태그에서 제출된 정보를 자바스크립트로 이해시키는 방법의 미들웨어
-app.use(express.urlencoded({
-      extended: true
-}));
+app.use(express.urlencoded({ extended: true }));
+//Express 가 자바스크립트에서 from 에서 보낸 문자열 제이슨 데이터를 오브젝트 형식으로 바꾸어 줌!
+app.use(express.json());
 //세션 (로그인 상태 쿠키 등을 제어)  
 app.use(session({
       secret: process.env.COOKIE_SECRET,
