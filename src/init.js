@@ -14,6 +14,10 @@ import "./models/Video"
 import "./models/User"
 
 
+// -----< User DB 모델 가져오기 >-----
+import "./models/Comment"
+
+
 // -----< 서버에서 app 가져오기 >-----
 import app from "./server"
 
