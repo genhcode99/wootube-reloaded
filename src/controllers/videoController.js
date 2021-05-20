@@ -1,9 +1,9 @@
-// -----<Video DB 가져오기 >-----
+// --------------------< DB 가져오기 >--------------------
 import User from "../models/User";
 import Video from "../models/Video"
 
 
-// -----< Home >-----
+// --------------------< Home >--------------------
 export const home = async (req, res) => {
 
   const videos = await Video.find({}).sort({
@@ -16,8 +16,7 @@ export const home = async (req, res) => {
 
 };
 
-
-// -----< Watch >-----
+// --------------------< Watch >--------------------
 export const watch = async (req, res) => {
   const { id } = req.params;
   //populate : (몽구스) 연결된 다른 모델의 정보를 가져온다.
@@ -31,7 +30,7 @@ export const watch = async (req, res) => {
 };
 
 
-// -----< Edit (get) >-----
+// --------------------< Edit (get) >--------------------
 export const getEdit = async (req, res) => {
   const { id } = req.params;
   const { user: { _id } } = req.session;
@@ -48,31 +47,17 @@ export const getEdit = async (req, res) => {
 };
 
 
-// -----< Edit (post) >-----
+// --------------------< Edit (post) >--------------------
 export const postEdit = async (req, res) => {
 
   //req.params 는 url 상 :id 또는 :something 을 가르키고, req.body는 form에서 submit된 key-value 데이터 이다.
-  const {
-    user: {
-      _id
-    }
-  } = req.session;
-  const {
-    id
-  } = req.params;
-  const {
-    title,
-    description,
-    hashtags
-  } = req.body;
-  const video = await Video.exists({
-    _id: id
-  });
+  const { user: { _id } } = req.session;
+  const { id } = req.params;
+  const { title, description, hashtags} = req.body;
+  const video = await Video.exists({ _id: id });
 
   if (!video) {
-    return res.status(404).render("404", {
-      pageTitle: "Video Not Found."
-    });
+    return res.status(404).render("404", { pageTitle: "Video Not Found." });
   }
 
   if (String(video.owner) !== String(_id)) {
@@ -89,20 +74,13 @@ export const postEdit = async (req, res) => {
   return res.redirect(`/videos/${id}`);
 };
 
-
-// -----< Upload (get) >-----
+// --------------------< Upload (get) >--------------------
 export const getUpload = (req, res) => {
-
-  return res.render("upload", {
-
-    pageTitle: "Upload Video"
-
-  });
-
+  return res.render("upload", { pageTitle: "Upload Video" });
 };
 
 
-// -----< Upload (post) >-----
+// --------------------< Upload (post) >--------------------
 export const postUpload = async (req, res) => {
   const { user: { _id }  } = req.session;
   const { video, thumb } = req.files;
@@ -110,7 +88,6 @@ export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
 
   try {
-
     const newVideo = await Video.create({
       title,
       description,
@@ -135,22 +112,14 @@ export const postUpload = async (req, res) => {
 };
 
 
-// -----< Delete Video >-----
+// --------------------< Delete Video >--------------------
 export const deleteVideo = async (req, res) => {
-  const {
-    id
-  } = req.params;
-  const {
-    user: {
-      _id
-    }
-  } = req.session;
+  const { id } = req.params;
+  const { user: { _id } } = req.session;
   const video = await Video.findById(id);
 
   if (!video) {
-    return res.status(404).render("404", {
-      pageTitle: "Video Not Found."
-    });
+    return res.status(404).render("404", { pageTitle: "Video Not Found." });
   }
 
   if (String(video.owner) !== String(_id)) {
@@ -161,12 +130,10 @@ export const deleteVideo = async (req, res) => {
 };
 
 
-// -----< Search >-----
+// --------------------< Search >--------------------
 export const search = async (req, res) => {
 
-  const {
-    keyword
-  } = req.query;
+  const { keyword } = req.query;
   let videos = [];
 
   if (keyword) {
@@ -176,13 +143,12 @@ export const search = async (req, res) => {
       },
     }).populate("owner");
   }
-  return res.render("search", {
-    pageTitle: "Search",
-    videos
-  });
+
+  return res.render("search", { pageTitle: "Search", videos});
 }
 
-//-----< View Count >-----
+
+// --------------------< View Count >--------------------
 export const registerView = async (req, res) => {
   const id = req.params.id;
   const video = await Video.findById(id);
@@ -192,4 +158,11 @@ export const registerView = async (req, res) => {
   video.meta.views = video.meta.views + 1;
   await video.save();
   return res.sendStatus(200);
+};
+
+// --------------------< Comment >--------------------
+export const createComment = (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  return res.end();
 };
