@@ -1,4 +1,5 @@
 const { default: fetch } = require("node-fetch");
+const { async } = require("regenerator-runtime");
 
 //--------------------< import >--------------------
 const videoContainer = document.getElementById("videoContainer");
@@ -7,14 +8,14 @@ const textarea = form.querySelector("textarea");
 
 
 //--------------------< Function >--------------------
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
   event.preventDefault();
   const text = textarea.value;
   const videoId = videoContainer.dataset.id;
   if(text === ""){
     return;
   }
-  fetch(`/api/videos/${videoId}/comment`,{
+  await fetch(`/api/videos/${videoId}/comment`,{
     method: "POST",
     headers:{
       "Content-Type": "application/json",

@@ -21,7 +21,9 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   //populate : (몽구스) 연결된 다른 모델의 정보를 가져온다.
-  const video = await Video.findById(id).populate("owner");
+  const video = await Video.findById(id).populate("owner").populate("comments");
+
+  console.log(video);
 
   if (!video) {
     return res.render("404", { pageTitle: "Video Not Found." });
@@ -177,6 +179,9 @@ export const createComment = async (req, res) => {
     owner: user._id,
     video : id,
   });
+
+  video.comments.push(comment._id);
+  video.save();
 
   return res.sendStatus(201);
 };
