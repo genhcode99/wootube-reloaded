@@ -23,8 +23,6 @@ export const watch = async (req, res) => {
   //populate : (몽구스) 연결된 다른 모델의 정보를 가져온다.
   const video = await Video.findById(id).populate("owner").populate("comments");
 
-  console.log(video);
-
   if (!video) {
     return res.render("404", { pageTitle: "Video Not Found." });
   }

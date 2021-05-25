@@ -24,25 +24,25 @@ block content
     p.video__title=video.description
     small.video__owner Uploaded by 
       a(href=`/users/${video.owner._id}`)=video.owner.name
-    small.video__createdAt=video.createdAt
+    small.video__createdAt=video.createdAt.toDateString()
 
   if String(video.owner._id) === String(loggedInUser._id)
-    a(href=`${video.id}/edit`) Edit Video &rarr;
-    br
-    a(href=`${video.id}/delete`) Delete Video &rarr;
+    div.video-ownerBtn
+      a(href=`${video.id}/edit`).fas.fa-arrow-circle-right  Edit Video
+      a(href=`${video.id}/delete`).fas.fa-arrow-circle-right  Delete Video
 
   if loggedIn
     div.video__add-comments
       form.video__comment-form#commentForm
         textarea(cols="30", rows="10", placeholder="Write a nice comment..")
-        button Add Comment
+        button.fas.fa-reply  Add Comment
 
   div.video__comments
     ul 
       each comment in video.comments.reverse()
         li.video__comment
           i.fas.fa-comment
-          |  #{comment.text}
+          span  #{comment.text}
 
   script(src="/assets/js/videoPlayer.js")
   if loggedIn
