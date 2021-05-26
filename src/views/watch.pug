@@ -1,7 +1,7 @@
 extends base
 
 block content
-  div#videoContainer(data-id=video._id)
+  div#videoContainer(data-id=video._id, data-userId=loggedInUser._id)
     video(src="/" + video.fileUrl)
     div#videoControls.videoControls
       div.videoControls__play 
@@ -40,10 +40,14 @@ block content
   div.video__comments
     ul 
       each comment in video.comments.reverse()
-        li.video__comment
+        li.video__comment(data-id=comment._id)
           i.fas.fa-comment
           span  #{comment.text}
-
+          if String(comment.owner) === String(loggedInUser._id) || String(video.owner._id) === String(loggedInUser._id)
+            span.delete-comment ❌ 
+            
   script(src="/assets/js/videoPlayer.js")
+  
+block script
   if loggedIn
     script(src="/assets/js/commentSection.js")

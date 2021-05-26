@@ -74,5 +74,14 @@
     border-radius: 9999px;
     color: black;
     margin-bottom: 10px ;
+    span{
+      max-width: 300px;
+      word-wrap: break-word;
+    }
+    button {
+      border: none;
+      background-color: white;
+      color: #590515;
+    }
   }
 }
