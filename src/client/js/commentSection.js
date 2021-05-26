@@ -7,9 +7,11 @@ const { default: Video } = require("../../models/Video");
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 const textarea = form.querySelector("textarea");
-const deleteComment = document.getElementById("delete-comment");
+const video__comment = document.querySelector(".video__comment")
+const deleteComment = document.querySelector(".delete-comment");
 
 
+//--------------------< Create Fake Comment >--------------------
 const addFakeComment = ( text, id ) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
@@ -26,9 +28,16 @@ const addFakeComment = ( text, id ) => {
   newComment.appendChild(span2);
   videoComments.prepend(newComment);
 }
+//--------------------< Delete Fake Comment >--------------------
+const deleteFakeComment = (deletedCommentId) => {
+  const fakeComment = document.querySelectorAll(`[data-id="${deletedCommentId}]"`);
+  console.log(fakeComment);
 
+  // question!
+  
+};
 
-//--------------------< Function >--------------------
+//--------------------< Create Comment >--------------------
 const handleSubmit = async (event) => {
   event.preventDefault();
   const videoId = videoContainer.dataset.id;
@@ -52,7 +61,24 @@ const handleSubmit = async (event) => {
 };
 
 
+//--------------------< Delete Comment >--------------------
+const handleDeleteComment = async () => {
+  const userId = deleteComment.dataset.id;
+  const commentId = video__comment.dataset.id;
+  const response = await fetch(`/api/comment/${commentId}`,{
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({userId})
+  });
+  if(response.status === 200){
+    const {deletedCommentId} = await response.json();
+    deleteFakeComment(deletedCommentId);
+  }
+};
+
 //--------------------< Event Listening >--------------------
 form.addEventListener("submit", handleSubmit);
-
+deleteComment.addEventListener("click", handleDeleteComment);
 

@@ -2,6 +2,7 @@
 import User from "../models/User";
 import Video from "../models/Video"
 import Comment from "../models/Comment"
+import { async } from "regenerator-runtime";
 
 
 // --------------------< Home >--------------------
@@ -182,4 +183,18 @@ export const createComment = async (req, res) => {
   video.save();
 
   return res.status(201).json({newCommentId: comment._id});
+};
+// --------------------< Delete Comment >--------------------
+export const deleteComment = async (req, res) =>{
+  const { userId } = req.body;
+  const commentId = req.params.id;
+  const comment = await Comment.findById(commentId);
+  const owner = comment.owner;
+
+  if(`${userId}` !== `${owner}`) {
+    return res.redirect("/");
+  }
+  await Comment.findByIdAndRemove(commentId);
+  return res.status(200).json({deletedCommentId: commentId});
+
 };
