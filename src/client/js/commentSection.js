@@ -31,10 +31,7 @@ const addFakeComment = ( text, id ) => {
 //--------------------< Delete Fake Comment >--------------------
 const deleteFakeComment = (deletedCommentId) => {
   const fakeComment = document.querySelectorAll(`[data-id="${deletedCommentId}]"`);
-  console.log(fakeComment);
-
-  // question!
-  
+  fakeComment.remove();
 };
 
 //--------------------< Create Comment >--------------------
