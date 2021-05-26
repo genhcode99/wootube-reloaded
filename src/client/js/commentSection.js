@@ -72,7 +72,7 @@ const handleDeleteComment = async () => {
   });
   if(response.status === 200){
     const {deletedCommentId} = await response.json();
-    deleteFakeComment(deletedCommentId);
+    location.reload();
   }
 };
 
