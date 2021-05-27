@@ -25,7 +25,7 @@ import app from "./server"
 
 
 //-----< 외부 request 를 듣게 준비하고 있어라 >-----
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 const handleListening = () => console.log(`✅ Server listening on port http://localhost:${PORT} ⛴`);
 
