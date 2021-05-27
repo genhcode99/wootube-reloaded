@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   
   socialOnly: { type: Boolean, default: false },
 
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true },
 
   password: { type: String },
 

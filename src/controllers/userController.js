@@ -5,6 +5,7 @@ import Video from "../models/Video";
 // -----< 가져오기 >-----
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import { async } from "regenerator-runtime";
 
 
 // -----< Join (get) >-----
@@ -73,13 +74,13 @@ export const getLogin = (req, res) => res.render("login", {
 // -----< Log In (post) >-----
 export const postLogin = async (req, res) => {
 
+  const pageTitle = "Log In";
   const {
-    username,
+    email,
     password
   } = req.body;
-  const pageTitle = "Log In";
   const user = await User.findOne({
-    username,
+    email,
     socialOnly: false
   })
 
@@ -195,9 +196,8 @@ export const finishGithubLogin = async (req, res) => {
 
 
 // -----< Log Out >-----
-export const logout = (req, res) => {
-  req.session.destroy();
-  req.flash("info", "Bye Bye");
+export const logout = async (req, res) => {
+  await req.session.destroy();
   return res.redirect("/");
 }
 
@@ -221,33 +221,17 @@ export const postEdit = async (req, res) => {
     },
     body: {
       name,
-      email,
       username,
       location
     },
     file,
   } = req;
 
-  const exists = await User.exists({
-    $or: [{
-      username
-    }, {
-      email
-    }]
-  })
-  if (exists) {
-    return res.status(400).render("edit-profile", {
-      pageTitle: "Edit Profile",
-      errorMessage: "This username/email is already taken."
-    });
-  };
-
   const isHeroku = process.env.NODE_ENV === "production";
   const updatedUser = await User.findByIdAndUpdate(
     _id, {
       avatarUrl: file ? (isHeroku? file.location : file.path): avatarUrl,
       name,
-      email,
       username,
       location,
     }, {
